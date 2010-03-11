@@ -1,7 +1,7 @@
 base   faviconlink
 author Kazutaka Miyasaka
 email  kazmiya@gmail.com
-date   2010-03-08
+date   2010-03-11
 name   FaviconLink Plugin
-desc   Adds favicon to external links
+desc   Adds a favicon next to external links by using JavaScript and Google's favicon cache
 url    http://www.dokuwiki.org/plugin:faviconlink

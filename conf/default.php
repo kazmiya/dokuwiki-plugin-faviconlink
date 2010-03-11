@@ -6,6 +6,7 @@
  * @author  Kazutaka Miyasaka <kazmiya@gmail.com>
  */
 
-$conf['enable']         = '1';
-$conf['disable_domain'] = '';
-$conf['use_https']      = '0';
+$conf['default_behavior']        = '1';
+$conf['invert_behavior_pages']   = '';
+$conf['invert_behavior_domains'] = '';
+$conf['use_https']               = '0';

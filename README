@@ -1,6 +1,9 @@
 
 ====== FaviconLink Plugin for DokuWiki ======
 
+Adds a favicon next to external links by using JavaScript and 
+Google's favicon cache.
+
 All documentation for this plugin is available online at:
 
   * http://www.dokuwiki.org/plugin:faviconlink

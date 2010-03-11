@@ -1,0 +1,10 @@
+/**
+ * FaviconLink Plugin for DokuWiki / style.css
+ * 
+ * @author Kazutaka Miyasaka <kazmiya@gmail.com>
+ */
+
+/* override the default link icon */
+body div.dokuwiki a.urlextern {
+    background-image: url(images/link_icon.png);
+}

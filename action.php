@@ -24,18 +24,22 @@ class action_plugin_faviconlink extends DokuWiki_Action_Plugin {
      * Registers an event handler
      */
     function register(&$controller) {
-        $controller->register_hook('DOKUWIKI_STARTED', 'AFTER', $this, '_exportJSINFO');
+        $controller->register_hook('DOKUWIKI_STARTED', 'AFTER', $this, '_exportToJSINFO');
     }
 
     /**
      * Exports configuration settings to $JSINFO
      */
-    function _exportJSINFO(&$event) {
+    function _exportToJSINFO(&$event) {
+        global $INFO;
         global $JSINFO;
 
-        $prefix = 'plugin_faviconlink';
-        $JSINFO[$prefix]['enable']         = $this->getConf('enable');
-        $JSINFO[$prefix]['disable_domain'] = $this->getConf('disable_domain');
-        $JSINFO[$prefix]['use_https']      = $this->getConf('use_https');
+        $JSINFO['plugin_faviconlink'] = array(
+            'pageID'       => (string)  $INFO['id'],
+            'defaultON'    => (boolean) $this->getConf('default_behavior'),
+            'pageFilter'   => (string)  $this->getConf('invert_behavior_pages'),
+            'domainFilter' => (string)  $this->getConf('invert_behavior_domains'),
+            'useHTTPS'     => (boolean) $this->getConf('use_https'),
+        );
     }
 }

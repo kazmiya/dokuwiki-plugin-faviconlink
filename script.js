@@ -3,41 +3,53 @@
  * 
  * Adds favicon to external links
  * 
- * @see    http://s2.googleusercontent.com/s2/favicons
+ * @see    http://www.google.com/s2/favicons
  * @author Kazutaka Miyasaka <kazmiya@gmail.com>
  */
 
 addInitEvent(function() {
-    // enabled?
-    if (!JSINFO.plugin_faviconlink.enable) return;
+    if (!JSINFO || !JSINFO.plugin_faviconlink) return;
 
-    // set config
-    var protocol = JSINFO.plugin_faviconlink.use_https ? 'https' : 'http';
-    if (JSINFO.plugin_faviconlink.disable_domain !== '') {
-        var disable = new RegExp(JSINFO.plugin_faviconlink.disable_domain);
-    }
+    var f = JSINFO.plugin_faviconlink;
+
+    var urlRegex     = /^https?:\/\/(?:\w+@\w+:)?([\w.-]+?)(?:\/|:|$)/i;
+    var pageFilter   = f.pageFilter   == '' ? null : new RegExp(f.pageFilter);
+    var domainFilter = f.domainFilter == '' ? null : new RegExp(f.domainFilter);
+    var protocol     = f.useHTTPS ? 'https' : 'http';
+
+    // apply page id filter
+    var pageMatched = checkFilter(f.pageID, pageFilter);
+    if (f.defaultON && pageMatched) return;
+    if (!f.defaultON && !pageMatched && !domainFilter) return;
 
     // extract external links
-    var urlexterns = getElementsByClass('urlextern', document, 'a');
+    var extLinks = getElementsByClass('urlextern', document, 'a');
 
     // replace each link icon with a favicon for that domain
-    for (var i = 0, i_len = urlexterns.length; i < i_len; i++) {
-        var matched = urlexterns[i].href.match(/^(https?:\/\/([^\/]+))/);
+    for (var i = 0, i_len = extLinks.length; i < i_len; i++) {
+        var matched = extLinks[i].href.match(urlRegex);
         if (!matched) continue;
-        if (disable && matched[2].match(disable)) continue;
+
+        // apply domain filter (using XOR operation)
+        var domainMatched = checkFilter(matched[1], domainFilter);
+        if (f.defaultON == (pageMatched || domainMatched)) continue;
 
         var src = protocol
-                  + '://s2.googleusercontent.com/s2/favicons?domain_url='
-                  + encodeURIComponent(matched[1]);
+                  + '://www.google.com/s2/favicons?domain='
+                  + encodeURIComponent(matched[1].toLowerCase());
 
-        replaceLinkIcon(urlexterns[i], src);
+        replaceLinkIcon(extLinks[i], src);
+    }
+
+    function checkFilter(str, regex) {
+        return regex ? !!str.match(regex) : false;
     }
 
     function replaceLinkIcon(link, src) {
-        img = new Image();
+        var img = new Image();
         img.onload = function() {
             link.style.backgroundImage = 'url("' + src + '")';
         };
         img.src = src;
-    };
+    }
 });

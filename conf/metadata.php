@@ -6,6 +6,7 @@
  * @author  Kazutaka Miyasaka <kazmiya@gmail.com>
  */
 
-$meta['enable']         = array('onoff');
-$meta['disable_domain'] = array('string');
-$meta['use_https']      = array('onoff');
+$meta['default_behavior']        = array('multichoice', '_choices' => array('1', '0'));
+$meta['invert_behavior_pages']   = array('string');
+$meta['invert_behavior_domains'] = array('string');
+$meta['use_https']               = array('onoff');
